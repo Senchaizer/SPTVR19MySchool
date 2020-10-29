@@ -5,71 +5,99 @@
  */
 package sptvr19myschool;
 
+import entity.Journal;
+import entity.Person;
+import entity.Subject;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
+import tools.manager.JournalManager;
+import tools.manager.PersonManager;
+import tools.manager.SubjectManager;
+import tools.savers.SaveToFile;
 
 /**
  *
- * @author user
+ * @author sillamae kutsekool
  */
 class App {
     private Scanner scanner = new Scanner(System.in);
+    
+    private  List<Person> listPersons = new ArrayList<>(); 
+    private  List<Subject> listSubjects = new ArrayList<>(); 
+    private  List<Journal> listJournals = new ArrayList<>(); 
+    
+    private PersonManager personManager = new PersonManager();
+    private SubjectManager subjectManager = new SubjectManager();
+    private JournalManager journalManager = new JournalManager();
+
+    public App() {
+        SaveToFile saveToFile = new SaveToFile();
+        this.listPersons = saveToFile.loadFromFile("listPersons");
+        this.listSubjects = saveToFile.loadFromFile("listSubjects");
+        this.listJournals = saveToFile.loadFromFile("listJournals");
+    }
+    
     public void run(){
+        System.out.println("--- Моя школа ---");
         boolean repeat = true;
         do{
-            System.out.println("---Моя школа---");
             System.out.println("Задачи:");
-            System.out.println("0.Выход из программы");
-            System.out.println("1.Добавить ученика");
-            System.out.println("2.Список учеников");
-            System.out.println("3.Добавить учителя");
-            System.out.println("4.Список учителей");
-            System.out.println("5.Добавить предмет");
-            System.out.println("6.Список предметов");
-            System.out.println("7.Выставить оценку");
-            System.out.println("8.Оценки ученика");
-            System.out.println("9.Оценки по предмету");
-            System.out.println("10.Изменить оценку");
+            System.out.println("0. Выход из программы");
+            System.out.println("1. Добавить ученика");
+            System.out.println("2. Список учеников");
+            System.out.println("3. Добавить учителя");
+            System.out.println("4. Список учителей");
+            System.out.println("5. Добавить предмет");
+            System.out.println("6. Список предметов");
+            System.out.println("7. Выставить оценку");
+            System.out.println("8. Оценки ученика");
+            System.out.println("9. Оценки по предмету");
+            System.out.println("10. Изменить оценку");
             System.out.println("Выберите задачу:");
             String task = scanner.nextLine();
-            switch(task) {
+            switch (task) {
                 case "0":
                     System.out.println("Выход из программы");
                     repeat = false;
-                break;
+                    break;
                 case "1":
-               
-                break;
+                    Person student = personManager.createPerson("STUDENT");
+                    personManager.addPersonToList(student, listPersons);
+                    
+                    break;
                 case "2":
-               
-                break;
+                    personManager.printListStudents(listPersons);
+                    break;
                 case "3":
-               
-                break;
+                    Person teacher = personManager.createPerson("TEACHER");
+                    personManager.addPersonToList(teacher, listPersons);
+                    break;
                 case "4":
-               
-                break;
+                    personManager.printListTeachers(listPersons);
+                    break;
                 case "5":
-               
-                break;
+                    Subject subject = subjectManager.createSubject(listPersons);
+                    subjectManager.addSubjectToList(subject, listSubjects);
+                    break;
                 case "6":
-               
-                break;
+                    subjectManager.printlistSubjects(listSubjects);
+                    break;
                 case "7":
-               
-                break;
+                    journalManager.setMarkToUser(listSubjects, listPersons, listJournals);
+                    break;
                 case "8":
-               
-                break;
+                    
+                    break;
                 case "9":
-               
-                break;
+                    
+                    break;
                 case "10":
-               
-                break;
+                    
+                    break;
                 default:
-                    System.out.println("Нет такой задачи. Выберите из списка:");
+                    System.out.println("Нет такой задачи. Выберите из списка.");;
             }
-    }while(repeat);
+        }while(repeat);
     }
-    
 }
